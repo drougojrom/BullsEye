@@ -39,23 +39,45 @@ class ViewController: UIViewController {
         roundLabel.text = String(round)
     }
     
+    func startNewGame(){
+        score = 0
+        round = 0
+        startNewRound()
+    }
+    
     
     // MARK : @IBActions
 
     @IBAction func showAlert(sender: UIButton) {
         
         let difference = abs(targetValue - currentValue)
-        let points = 100 - difference
-        
+        var points = 100 - difference
+        let titleValue : String
         score += points
         
-        let message = "You scored \(points) points"
+        switch difference {
+        case 0:
+            titleValue = "perfect"
+            points += 100
+        case 0..<5:
+            titleValue = "just almost had it!"
+            points += 50
+        case 5..<10:
+            titleValue = "pretty good!"
+        default:
+            titleValue = "not even close :( "
+        }
+        
+        let message = "You scored \(points)"
         
 //        let message = "The value of slider is: \(currentValue)" + "\nThe target value is: \(targetValue)" + "\nThe difference is \(difference)"
         
-        let alert = UIAlertController(title: "Hello!", message: message, preferredStyle: .Alert)
+        let alert = UIAlertController(title: titleValue, message: message, preferredStyle: .Alert)
         
-        let action = UIAlertAction(title: "Ok", style: .Default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: .Default, handler: { action in
+                self.startNewRound()
+                self.updateLabels()
+        })
         
         alert.addAction(action)
         
@@ -76,12 +98,36 @@ class ViewController: UIViewController {
         
         startNewRound()
         updateLabels()
+        startNewGame()
         
         currentValue = lroundf(slider.value)
         targetValue = 1 + Int(arc4random_uniform(100))
         
+        let thumbImageNormal = UIImage(named: "SliderThumb-Normal")
+        slider.setThumbImage(thumbImageNormal, forState: .Normal)
+        
+        let thumbImageHighlighted = UIImage(named: "SliderThumb-Highlighted")
+        slider.setThumbImage(thumbImageHighlighted, forState: .Highlighted)
+        
+        let insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        
+        if let trackLeftImage = UIImage(named: "SliderTrackLeft") {
+            let trackLeftResizable = trackLeftImage.resizableImageWithCapInsets(insets)
+            slider.setMinimumTrackImage(trackLeftResizable, forState: .Normal)
+        }
+        
+        if let trackRightImage = UIImage(named: "SliderTrackRight") {
+            let trackRightResizable = trackRightImage.resizableImageWithCapInsets(insets)
+            slider.setMaximumTrackImage(trackRightResizable, forState: .Normal)
+        }
+        
     }
 
+    @IBAction func startOver(sender: UIButton) {
+        
+        startNewGame()
+        
+    }
 
 }
 
