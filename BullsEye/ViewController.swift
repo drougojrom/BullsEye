@@ -14,12 +14,15 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var targetLabel: UILabel!
-    
+    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var roundLabel: UILabel!
     
     // MARK : var and let
     
-    var currentValue: Int = 50
-    var targetValue: Int = 0
+    var currentValue = 50
+    var targetValue = 0
+    var score = 0
+    var round = 0
     
     // MARK: func's
     
@@ -27,10 +30,13 @@ class ViewController: UIViewController {
         targetValue = 1 + Int(arc4random_uniform(100))
         currentValue = 50
         slider.value = Float(currentValue)
+        round += 1
     }
     
     func updateLabels(){
         targetLabel.text = String(targetValue)
+        scoreLabel.text = String(score)
+        roundLabel.text = String(round)
     }
     
     
@@ -38,17 +44,14 @@ class ViewController: UIViewController {
 
     @IBAction func showAlert(sender: UIButton) {
         
-        var difference: Int
+        let difference = abs(targetValue - currentValue)
+        let points = 100 - difference
         
-        if currentValue > targetValue {
-            difference = currentValue - targetValue
-        } else if currentValue < targetValue {
-            difference = targetValue - currentValue
-        } else {
-            difference = 0
-        }
+        score += points
         
-        let message = "The value of slider is: \(currentValue)" + "\nThe target value is: \(targetValue)" + "\nThe difference is \(difference)"
+        let message = "You scored \(points) points"
+        
+//        let message = "The value of slider is: \(currentValue)" + "\nThe target value is: \(targetValue)" + "\nThe difference is \(difference)"
         
         let alert = UIAlertController(title: "Hello!", message: message, preferredStyle: .Alert)
         

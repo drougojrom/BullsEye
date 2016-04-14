@@ -253,6 +253,8 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="roundLabel" destination="An6-UI-NQ7" id="whv-1U-sxB"/>
+                        <outlet property="scoreLabel" destination="DLm-KI-vaO" id="B10-Q5-5d7"/>
                         <outlet property="slider" destination="Hog-WC-Ava" id="bwV-lx-hIp"/>
                         <outlet property="targetLabel" destination="xAu-Ge-7Os" id="dxu-Jd-khl"/>
                     </connections>
